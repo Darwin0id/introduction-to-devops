@@ -1,0 +1,7 @@
+.git*
+docker-compose.*
+ecr_pass
+.local
+.gitlab
+.docker
+.gitlab-ci.yml

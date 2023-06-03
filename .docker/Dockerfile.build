@@ -1,0 +1,20 @@
+# Use an official Python runtime as a parent image
+FROM python:3.7-slim AS build
+
+# Set the working directory in the container to /app
+WORKDIR /app
+
+# Update all packages in the image
+RUN apt-get update -y
+
+# Install binutils
+RUN apt-get install -y binutils
+
+# Add the current directory contents into the container at /app
+ADD . /app
+
+# Install PyInstaller and any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt pyinstaller
+
+# Build the application into a binary
+ENTRYPOINT pyinstaller --onefile --add-data="templates/index.html:templates/" app.py --distpath dist

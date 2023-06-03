@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  db:
+    container_name: ${PROJECT_NAME}_db
+    image: arm64v8/mysql:oracle
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - tempconverter-cloud
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASS
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASS
+
+  web:
+    container_name: ${PROJECT_NAME}_app
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.app
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - tempconverter-cloud
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    environment:
+      DB_HOST: ${PROJECT_NAME}_db
+      DB_NAME: $DB_NAME
+      DB_USER: $DB_USER
+      DB_PASS: $DB_PASS
+      STUDENT: $STUDENT
+      COLLEGE: $COLLEGE
+
+volumes:
+  db_data:
+
+networks:
+  tempconverter-cloud:
+    driver: bridge
