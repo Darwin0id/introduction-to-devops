@@ -50,7 +50,7 @@ deploy:
 	docker stack deploy -c docker-compose.yml tempconverter
 	@echo ' '
 	@printf ${GREEN}
-	@echo 'Tempconverter is available at: http://localhost:5000'
+	@echo 'Tempconverter is available at: http://localhost:80'
 	@printf ${STOP}
 	@echo ' '
 
@@ -61,11 +61,11 @@ pipeline: build package publish deploy
 local:
 	$(info Running tempconverter installation script, this might take a minute...)
 	cp .local/docker-compose.yml.dist docker-compose.yml
-	podman compose build --no-cache
-	podman compose up --detach --force-recreate --remove-orphans
+	podman-compose build --no-cache
+	podman-compose up --detach --force-recreate --remove-orphans
 	@echo ' '
 	@printf ${GREEN}
-	@echo 'Tempconverter is available at: http://localhost:5000'
+	@echo 'Tempconverter is available at: http://localhost:80'
 	@printf ${STOP}
 	@echo ' '
 
